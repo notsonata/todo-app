@@ -61,14 +61,12 @@ $result = mysqli_stmt_get_result($stmt);
                                 <a href="update_task.php?task_id=<?php echo $taskId; ?>" 
                                    class="btn-completed"
                                    title="Mark as completed">
-                                   Complete
                                 </a>
                             <?php } ?>
                             <a href="delete_task.php?task_id=<?php echo $taskId; ?>" 
                                class="btn-remove"
                                title="Delete task"
                                onclick="return confirm('Are you sure you want to delete this task?');">
-                               Delete
                             </a>
                         </td>
                     </tr>
