@@ -16,8 +16,14 @@ RUN a2enmod rewrite
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
-COPY . /var/www/html/
+# Remove default index.html if it exists
+RUN rm -rf /var/www/html/*
+
+# Copy application files from src directory
+COPY src/ /var/www/html/
+
+# Copy init.sql for database setup
+COPY init.sql /docker-entrypoint-initdb.d/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
