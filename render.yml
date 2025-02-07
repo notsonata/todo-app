@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: php-app
+    env: docker
+    buildCommand: docker build -t php-app .
+    startCommand: docker run -p $PORT:$PORT -e PORT=$PORT php-app
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: todo-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: todo-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: todo-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: todo-db
+          property: database
+
+databases:
+  - name: todo-db
+    databaseName: todo
+    plan: free

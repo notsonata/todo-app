@@ -1,4 +1,4 @@
-# PHP Apache Dockerfile
+# PHP Apache Dockerfile for Render
 FROM php:8.2-apache
 
 # Install system dependencies
@@ -17,7 +17,7 @@ RUN a2enmod rewrite
 WORKDIR /var/www/html
 
 # Copy application files
-COPY src/ /var/www/html/
+COPY . /var/www/html/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
@@ -31,5 +31,12 @@ RUN echo '<Directory /var/www/html>\n\
     DirectoryIndex index.php\n\
 </Directory>' >> /etc/apache2/apache2.conf
 
-# Keep original port 80 for local development
-EXPOSE 80
+# Configure Apache to use environment variables for port
+RUN echo "Listen \${PORT}" > /etc/apache2/ports.conf
+RUN sed -i "s/80/\${PORT}/g" /etc/apache2/sites-available/000-default.conf
+
+# Start script
+COPY start.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/start.sh
+
+CMD ["/usr/local/bin/start.sh"]
